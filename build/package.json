@@ -35,6 +35,6 @@
     "underscore-plus": "1.x",
     "unzip": "~0.1.9",
     "vm-compatibility-layer": "~0.1.0",
-    "npm": "~1.4.5"
+    "npm": "1.4.9"
   }
 }
