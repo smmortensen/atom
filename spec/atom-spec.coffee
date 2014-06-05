@@ -380,8 +380,8 @@ describe "the `atom` global", ->
 
           runs ->
             atom.packages.deactivatePackage('package-with-keymaps')
-            expect(atom.keymaps.findKeyBindings(keystrokes:'ctrl-z', target:$$ -> @div class: 'test-1'[0])).toHaveLength 0
-            expect(atom.keymaps.findKeyBindings(keystrokes:'ctrl-z', target:$$ -> @div class: 'test-2'[0])).toHaveLength 0
+            expect(atom.keymaps.findKeyBindings(keystrokes:'ctrl-z', target: ($$ -> @div class: 'test-1')[0])).toHaveLength 0
+            expect(atom.keymaps.findKeyBindings(keystrokes:'ctrl-z', target: ($$ -> @div class: 'test-2')[0])).toHaveLength 0
 
         it "removes the package's stylesheets", ->
           waitsForPromise ->
@@ -510,20 +510,20 @@ describe "the `atom` global", ->
           # enabling of theme
           pack = atom.packages.enablePackage(packageName)
 
-          activatedPackages = null
           waitsFor ->
-            activatedPackages = atom.packages.getActivePackages()
-            activatedPackages.length > 0
+            pack in atom.packages.getActivePackages()
 
           runs ->
-            expect(activatedPackages).toContain(pack)
             expect(atom.config.get('core.themes')).toContain packageName
             expect(atom.config.get('core.disabledPackages')).not.toContain packageName
 
             # disabling of theme
             pack = atom.packages.disablePackage(packageName)
-            activatedPackages = atom.packages.getActivePackages()
-            expect(activatedPackages).not.toContain(pack)
+
+          waitsFor ->
+            not (pack in atom.packages.getActivePackages())
+
+          runs ->
             expect(atom.config.get('core.themes')).not.toContain packageName
             expect(atom.config.get('core.themes')).not.toContain packageName
             expect(atom.config.get('core.disabledPackages')).not.toContain packageName

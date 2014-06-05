@@ -28,7 +28,7 @@ LongLineLength = 1000
 # ## Iterating over the open editor views
 #
 # ```coffee
-# for editorView in atom.workspace.getEditorViews()
+# for editorView in atom.workspaceView.getEditorViews()
 #   console.log(editorView.getEditor().getPath())
 # ```
 #
@@ -50,7 +50,7 @@ class EditorView extends View
     showLineNumbers: true
     autoIndent: true
     normalizeIndentOnPaste: true
-    nonWordCharacters: "./\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-"
+    nonWordCharacters: "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-"
     preferredLineLength: 80
     tabLength: 2
     softWrap: false
@@ -154,11 +154,13 @@ class EditorView extends View
       'editor:move-to-previous-word': => @editor.moveCursorToPreviousWord()
       'editor:select-word': => @editor.selectWord()
       'editor:consolidate-selections': (event) => @consolidateSelections(event)
-      'editor:backspace-to-beginning-of-word': => @editor.backspaceToBeginningOfWord()
-      'editor:backspace-to-beginning-of-line': => @editor.backspaceToBeginningOfLine()
+      'editor:delete-to-beginning-of-word': => @editor.deleteToBeginningOfWord()
+      'editor:delete-to-beginning-of-line': => @editor.deleteToBeginningOfLine()
       'editor:delete-to-end-of-word': => @editor.deleteToEndOfWord()
       'editor:delete-line': => @editor.deleteLine()
       'editor:cut-to-end-of-line': => @editor.cutToEndOfLine()
+      'editor:move-to-beginning-of-next-paragraph': => @editor.moveCursorToBeginningOfNextParagraph()
+      'editor:move-to-beginning-of-previous-paragraph': => @editor.moveCursorToBeginningOfPreviousParagraph()
       'editor:move-to-beginning-of-screen-line': => @editor.moveCursorToBeginningOfScreenLine()
       'editor:move-to-beginning-of-line': => @editor.moveCursorToBeginningOfLine()
       'editor:move-to-end-of-screen-line': => @editor.moveCursorToEndOfScreenLine()
@@ -387,7 +389,7 @@ class EditorView extends View
 
       screenPosition = @screenPositionFromMouseEvent(e)
       if clickCount == 1
-        if e.metaKey
+        if e.metaKey or (process.platform isnt 'darwin' and e.ctrlKey)
           @editor.addCursorAtScreenPosition(screenPosition)
         else if e.shiftKey
           @editor.selectToScreenPosition(screenPosition)
@@ -545,7 +547,6 @@ class EditorView extends View
       @showBufferConflictAlert(@editor)
 
     @subscribe @editor, "path-changed", =>
-      @editor.reloadGrammar()
       @trigger 'editor:path-changed'
 
     @subscribe @editor, "grammar-changed", =>
@@ -1490,7 +1491,7 @@ class EditorView extends View
       position = 0
       for token in tokens
         @updateScopeStack(line, scopeStack, token.scopes)
-        hasIndentGuide = not mini and showIndentGuide and token.hasLeadingWhitespace or (token.hasTrailingWhitespace and lineIsWhitespaceOnly)
+        hasIndentGuide = not mini and showIndentGuide and (token.hasLeadingWhitespace or (token.hasTrailingWhitespace and lineIsWhitespaceOnly))
         line.push(token.getValueAsHtml({invisibles, hasIndentGuide}))
         position += token.value.length
 

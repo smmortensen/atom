@@ -1,6 +1,11 @@
 'body':
+  # Platform Bindings
+  'ctrl-pageup': 'pane:show-previous-item'
+  'ctrl-pagedown': 'pane:show-next-item'
+
   # Atom Specific
   'enter': 'core:confirm'
+  'num-enter': 'core:confirm'
   'escape': 'core:cancel'
   'up': 'core:move-up'
   'down': 'core:move-down'
@@ -10,6 +15,7 @@
   'ctrl-alt-i': 'window:toggle-dev-tools'
   'ctrl-alt-p': 'window:run-package-specs'
   'ctrl-alt-s': 'application:run-all-specs'
+  'F11': 'window:toggle-full-screen'
 
   # Sublime Parity
   'ctrl-N': 'application:new-window'
@@ -30,6 +36,7 @@
   'shift-left': 'core:select-left'
   'shift-right': 'core:select-right'
   'delete': 'core:delete'
+  'shift-delete': 'core:delete'
   'pageup': 'core:page-up'
   'pagedown': 'core:page-down'
   'backspace': 'core:backspace'
@@ -38,6 +45,8 @@
   'ctrl-shift-tab': 'pane:show-previous-item'
   'ctrl-shift-up': 'core:move-up'
   'ctrl-shift-down': 'core:move-down'
+  'ctrl-alt-up': 'editor:add-selection-above'
+  'ctrl-alt-down': 'editor:add-selection-below'
   'ctrl-=': 'window:increase-font-size'
   'ctrl-+': 'window:increase-font-size'
   'ctrl--': 'window:decrease-font-size'
@@ -63,12 +72,14 @@
   'ctrl-right': 'editor:move-to-end-of-word'
   'ctrl-shift-left': 'editor:select-to-beginning-of-word'
   'ctrl-shift-right': 'editor:select-to-end-of-word'
-  'ctrl-backspace': 'editor:backspace-to-beginning-of-word'
-  'ctrl-delete': 'editor:backspace-to-beginning-of-word'
+  'ctrl-backspace': 'editor:delete-to-beginning-of-word'
+  'ctrl-delete': 'editor:delete-to-end-of-word'
+  'ctrl-home': 'core:move-to-top'
+  'ctrl-end': 'core:move-to-bottom'
 
   # Sublime Parity
   'ctrl-a': 'core:select-all'
-  'ctrl-alt-p': 'editor:log-cursor-scope'
+  'ctrl-alt-shift-p': 'editor:log-cursor-scope'
   'ctrl-k ctrl-u': 'editor:upper-case'
   'ctrl-k ctrl-l': 'editor:lower-case'
 
